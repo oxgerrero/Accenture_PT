@@ -8,6 +8,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 /**
  *
@@ -16,11 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
+@Tag(name = "Producto", description = "Administrar Endpoint Productos")
 public class ProductoController {
     private final ProductoService productoService;
 
     @PostMapping("/sucursal/{sucursalId}/producto")
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "Crear Prodcuto")
     public ProductoResponse crear(
             @PathVariable Long sucursalId,
             @Valid @RequestBody CrearProductoRequest request
@@ -31,6 +35,7 @@ public class ProductoController {
 
     @DeleteMapping("/producto/{productoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "Eliminar Producto")
     public void eliminar(
             @PathVariable Long productoId
     ) {
@@ -39,6 +44,7 @@ public class ProductoController {
     }
 
     @PatchMapping("/producto/{productoId}/disponible")
+    @Operation(summary = "Modificar el disponible por Producto")
     public ProductoResponse modificarDisponible(
             @PathVariable Long productoId,
             @Valid @RequestBody ModificarDisponibleRequest request
