@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -34,6 +35,6 @@ public class Sucursal extends BaseEntity{
     @OneToMany(mappedBy = "sucursal",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<Producto> productos = new ArrayList<>();
+    private Set<Producto> productos;
 
 }
