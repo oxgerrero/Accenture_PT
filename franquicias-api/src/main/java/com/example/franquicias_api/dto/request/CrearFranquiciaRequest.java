@@ -9,7 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 public record CrearFranquiciaRequest(
 
         @NotBlank(message = "Requiere nombre de la franquicia")
-        String name
+        String nombre
 
 ) {
 }

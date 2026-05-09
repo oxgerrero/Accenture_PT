@@ -6,9 +6,9 @@ import jakarta.validation.constraints.NotBlank;
  *
  * @author LEO
  */
-public record CrearSucursalRequest (
+public record ModificarNombreRequest(
 
-        @NotBlank(message = "Requiere nombre de la sucursal")
+        @NotBlank(message = "Requiere nombre")
         String nombre
 
 ) {
