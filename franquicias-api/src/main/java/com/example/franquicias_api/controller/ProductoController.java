@@ -2,6 +2,7 @@ package com.example.franquicias_api.controller;
 
 import com.example.franquicias_api.dto.request.CrearProductoRequest;
 import com.example.franquicias_api.dto.request.ModificarDisponibleRequest;
+import com.example.franquicias_api.dto.request.ModificarNombreRequest;
 import com.example.franquicias_api.dto.response.ProductoResponse;
 import com.example.franquicias_api.service.ProductoService;
 import jakarta.validation.Valid;
@@ -51,5 +52,15 @@ public class ProductoController {
     ) {
 
         return productoService.modificarDisponible(productoId, request);
+    }
+    
+    @PutMapping("/producto/{productoId}/nombre")
+    @Operation(summary = "Modificar nombre Producto")
+    public ProductoResponse modificarNombre(
+            @PathVariable Long productoId,
+            @Valid @RequestBody ModificarNombreRequest request
+    ) {
+
+        return productoService.modificarNombre(productoId, request);
     }
 }

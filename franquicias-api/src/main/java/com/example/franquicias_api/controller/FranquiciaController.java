@@ -3,6 +3,7 @@ package com.example.franquicias_api.controller;
 import com.example.franquicias_api.dto.request.CrearFranquiciaRequest;
 import com.example.franquicias_api.dto.request.CrearSucursalRequest;
 import com.example.franquicias_api.dto.request.ModificarNombreRequest;
+import com.example.franquicias_api.dto.response.FranquiciaDetalleResponse;
 import com.example.franquicias_api.dto.response.FranquiciaResponse;
 import com.example.franquicias_api.dto.response.SucursalResponse;
 import com.example.franquicias_api.dto.response.TopProductoResponse;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 /**
  *
@@ -65,5 +65,12 @@ public class FranquiciaController {
     ) {
 
         return franquiciaService.modificarNombre(id, request);
+    }
+    
+    @GetMapping
+    @Operation(summary = "Obtiene todas las franquicias con sus sucursales y sus productos")
+    public List<FranquiciaDetalleResponse> findAll() {
+
+        return franquiciaService.findAll();
     }
 }

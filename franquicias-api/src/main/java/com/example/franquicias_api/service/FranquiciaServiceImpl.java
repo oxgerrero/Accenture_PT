@@ -3,7 +3,10 @@ package com.example.franquicias_api.service;
 import com.example.franquicias_api.dto.request.CrearFranquiciaRequest;
 import com.example.franquicias_api.dto.request.CrearSucursalRequest;
 import com.example.franquicias_api.dto.request.ModificarNombreRequest;
+import com.example.franquicias_api.dto.response.FranquiciaDetalleResponse;
 import com.example.franquicias_api.dto.response.FranquiciaResponse;
+import com.example.franquicias_api.dto.response.ProductoDetalleResponse;
+import com.example.franquicias_api.dto.response.SucursalDetalleResponse;
 import com.example.franquicias_api.dto.response.SucursalResponse;
 import com.example.franquicias_api.dto.response.TopProductoResponse;
 import com.example.franquicias_api.entity.Franquicia;
@@ -15,6 +18,7 @@ import com.example.franquicias_api.repository.SucursalRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  *
@@ -22,11 +26,17 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class FranquiciaServiceImpl implements FranquiciaService{
     
     private final FranquiciaRepository franquiciaRepository;
     private final SucursalRepository sucursalRepository;
 
+    /**
+     *
+     * @param request
+     * @return
+     */
     @Override
     public FranquiciaResponse crear(CrearFranquiciaRequest request) {
 
@@ -42,6 +52,12 @@ public class FranquiciaServiceImpl implements FranquiciaService{
         );
     }
     
+    /**
+     *
+     * @param franquiciaId
+     * @param request
+     * @return
+     */
     @Override
     public SucursalResponse añadirSucursal(
             Long franquiciaId,
@@ -65,6 +81,11 @@ public class FranquiciaServiceImpl implements FranquiciaService{
         );
     }
     
+    /**
+     *
+     * @param franquiciaId
+     * @return
+     */
     @Override
     public List<TopProductoResponse> getTopProducto(Long franquiciaId) {
 
@@ -96,6 +117,12 @@ public class FranquiciaServiceImpl implements FranquiciaService{
                 .toList();
     }
     
+    /**
+     *
+     * @param id
+     * @param request
+     * @return
+     */
     @Override
     public FranquiciaResponse modificarNombre(
             Long id,
@@ -114,5 +141,38 @@ public class FranquiciaServiceImpl implements FranquiciaService{
                 modificado.getId(),
                 modificado.getNombre()
         );
+    }
+    
+    /**
+     *
+     * @return
+     */
+    @Override
+    public List<FranquiciaDetalleResponse> findAll() {
+
+        return franquiciaRepository.findAllWithRelations()
+                .stream()
+                .map(franquicia -> new FranquiciaDetalleResponse(
+                        franquicia.getId(),
+                        franquicia.getNombre(),
+                        franquicia.getSucursales()
+                                .stream()
+                                .map(sucursal -> new SucursalDetalleResponse(
+                                        sucursal.getId(),
+                                        sucursal.getNombre(),
+                                        sucursal.getProductos()
+                                                .stream()
+                                                .map(producto -> new ProductoDetalleResponse(
+                                                        producto.getId(),
+                                                        producto.getNombre(),
+                                                        producto.getDisponible()
+                                                ))
+                                                .toList()
+
+                                ))
+                                .toList()
+
+                ))
+                .toList();
     }
 }
